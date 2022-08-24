@@ -1,0 +1,40 @@
+﻿<Window x:Class="PMS.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converter="clr-namespace:PMS.VM.Converter"
+        xmlns:vm="clr-namespace:PMS.VM" d:DataContext="{d:DesignInstance Type=vm:MainVM}"
+        mc:Ignorable="d"
+        Title="PMS" Height="450" Width="800">
+    <Window.Resources>
+        <converter:TimeSpanToLength x:Key="TimeSpanToLength"/>
+    </Window.Resources>
+    <Grid>
+        <ItemsControl ItemsSource="{Binding Employees}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ItemsControl ItemsSource="{Binding Path=Bookings}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Grid Height="20" Margin="5" Background="LightGray"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Grid.Column="1" Fill="Green" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                    <Rectangle.Margin>
+                                        <Binding  Path="Timeline.Reference" Converter="{StaticResource TimeSpanToLength}"/>
+                                    </Rectangle.Margin>
+                                    <Rectangle.Width>
+                                        <Binding Path="Timeline.Duration" Converter="{StaticResource TimeSpanToLength}"/>
+                                    </Rectangle.Width>
+                                </Rectangle>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>
